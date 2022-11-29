@@ -4,6 +4,11 @@
 
 directive @upper on FIELD_DEFINITION
 
+type User {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 type Chap {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -35,22 +40,11 @@ type Manga {
   reading_type: Int!
 }
 
-type User {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-type Test1 {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type Query {
   chap(id: Int!): Chap!
   user(id: Int!): User!
   mangas: [Manga!]!
   manga(id: Int!): Manga!
-  test1(id: Int!): Test1!
 }
 
 type Mutation {
@@ -63,9 +57,6 @@ type Mutation {
   createManga(createMangaInput: CreateMangaInput!): Manga!
   updateManga(updateMangaInput: UpdateMangaInput!): Manga!
   removeManga(id: Int!): Manga!
-  createTest1(createTest1Input: CreateTest1Input!): Test1!
-  updateTest1(updateTest1Input: UpdateTest1Input!): Test1!
-  removeTest1(id: Int!): Test1!
 }
 
 input CreateChapInput {
@@ -135,16 +126,5 @@ input UpdateMangaInput {
 
   """The status of the manga"""
   reading_type: Int
-  id: Int!
-}
-
-input CreateTest1Input {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateTest1Input {
-  """Example field (placeholder)"""
-  exampleField: Int
   id: Int!
 }

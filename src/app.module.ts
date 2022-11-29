@@ -2,17 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { MongooseConfig, GraphQLConfig } from './configurations';
-import { ChapModule, UserModule, MangaModule } from './modules';
-import { TestResolver } from './test/test.resolver';
-import { Test1Module } from './test1/test1.module';
+import { MongooseConfig, GraphQLConfig, AppConfig } from './configurations';
+import { ChapModule, UserModule, MangaModule, AuthModule } from './modules';
 
-const CONFIGURATIONS = [MongooseConfig, GraphQLConfig];
-const MODULES = [ChapModule, UserModule, MangaModule];
+const CONFIGURATIONS = [AppConfig, MongooseConfig, GraphQLConfig];
+const MODULES = [ChapModule, UserModule, MangaModule, AuthModule];
 
 @Module({
-  imports: [...MODULES, ...CONFIGURATIONS, Test1Module],
+  imports: [...MODULES, ...CONFIGURATIONS],
   controllers: [AppController],
-  providers: [AppService, TestResolver],
+  providers: [AppService],
 })
 export class AppModule {}
