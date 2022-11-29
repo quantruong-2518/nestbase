@@ -2,11 +2,13 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 
 import { MangaService } from './manga.service';
 import { Manga } from './entities/manga.entity';
-
 import { CreateMangaInput } from './dto/create-manga.input';
 import { UpdateMangaInput } from './dto/update-manga.input';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'modules/auth/guards';
 
 @Resolver(() => Manga)
+@UseGuards(GqlAuthGuard)
 export class MangaResolver {
   constructor(private readonly mangaService: MangaService) {}
 
