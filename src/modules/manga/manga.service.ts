@@ -1,59 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Schema as MongooseSchema } from 'mongoose';
+
 import { CreateMangaInput } from './dto/create-manga.input';
 import { UpdateMangaInput } from './dto/update-manga.input';
 
-import {
-  MANGA_STATUS,
-  READING_TYPE,
-  WEEKLY_RELEASE_DAY,
-} from './enums/manga.enum';
-
-import { IManga } from './models/manga.model';
-
-const DEFAULT_ARRAY = [
-  {
-    name: 'One piece',
-    avatar: 'avatar1',
-    description: 'description1',
-    status: MANGA_STATUS.IN_PROGRESS,
-    reading_type: READING_TYPE.COMIC,
-    thumbnail: '',
-    weekly_release_day: WEEKLY_RELEASE_DAY.TUESDAY,
-  },
-  {
-    name: 'Naruto',
-    avatar: 'avatar2',
-    description: 'description2',
-    status: MANGA_STATUS.DONE,
-    reading_type: READING_TYPE.COMIC,
-    thumbnail: '',
-    weekly_release_day: WEEKLY_RELEASE_DAY.MON,
-  },
-];
+import { Manga, MangaDocument } from './models/manga.schema';
 
 @Injectable()
 export class MangaService {
-  create(createMangaInput: CreateMangaInput) {
-    DEFAULT_ARRAY.push(createMangaInput);
+  constructor(
+    @InjectModel(Manga.name) private mangaModel: Model<MangaDocument>,
+  ) {}
 
-    console.log('createMangaInput', createMangaInput);
-
-    return createMangaInput;
+  public create(createMangaInput: CreateMangaInput) {
+    const newManga = new this.mangaModel(createMangaInput);
+    return newManga.save();
   }
 
-  findAll(): Array<IManga> {
-    return DEFAULT_ARRAY;
+  public findAll() {
+    return this.mangaModel.find().lean().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} manga`;
+  public findOne(id: MongooseSchema.Types.ObjectId) {
+    return this.mangaModel.findById(id).lean().exec();
   }
 
-  update(id: number, updateMangaInput: UpdateMangaInput) {
-    return `This action updates a #${id} manga`;
+  public update(id: number, updateMangaInput: UpdateMangaInput) {
+    return this.mangaModel
+      .findByIdAndUpdate(id, updateMangaInput, { new: true })
+      .lean()
+      .exec();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} manga`;
+  public remove(id: MongooseSchema.Types.ObjectId) {
+    return this.mangaModel.findOneAndRemove(id).exec();
   }
 }

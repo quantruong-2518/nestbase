@@ -41,44 +41,14 @@ type Manga {
 }
 
 type Query {
-  chap(id: Int!): Chap!
-  user(id: Int!): User!
   mangas: [Manga!]!
   manga(id: Int!): Manga!
 }
 
 type Mutation {
-  createChap(createChapInput: CreateChapInput!): Chap!
-  updateChap(updateChapInput: UpdateChapInput!): Chap!
-  removeChap(id: Int!): Chap!
-  createUser(createUserInput: CreateUserInput!): User!
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
   createManga(createMangaInput: CreateMangaInput!): Manga!
   updateManga(updateMangaInput: UpdateMangaInput!): Manga!
-  removeManga(id: Int!): Manga!
-}
-
-input CreateChapInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateChapInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
-}
-
-input CreateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateUserInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+  removeManga(id: ID!): Manga!
 }
 
 """Manga model for creation"""

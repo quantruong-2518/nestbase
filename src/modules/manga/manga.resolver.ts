@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
 
 import { MangaService } from './manga.service';
 import { Manga } from './entities/manga.entity';
@@ -6,6 +6,7 @@ import { CreateMangaInput } from './dto/create-manga.input';
 import { UpdateMangaInput } from './dto/update-manga.input';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from 'modules/auth/guards';
+import { Schema } from 'mongoose';
 
 @Resolver(() => Manga)
 @UseGuards(GqlAuthGuard)
@@ -13,27 +14,35 @@ export class MangaResolver {
   constructor(private readonly mangaService: MangaService) {}
 
   @Mutation(() => Manga)
-  createManga(@Args('createMangaInput') createMangaInput: CreateMangaInput) {
+  public async createManga(
+    @Args('createMangaInput') createMangaInput: CreateMangaInput,
+  ) {
     return this.mangaService.create(createMangaInput);
   }
 
   @Query(() => [Manga], { name: 'mangas' })
-  findAll() {
+  public async findAll() {
     return this.mangaService.findAll();
   }
 
   @Query(() => Manga, { name: 'manga' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  public async findOne(
+    @Args('id', { type: () => Int }) id: Schema.Types.ObjectId,
+  ) {
     return this.mangaService.findOne(id);
   }
 
   @Mutation(() => Manga)
-  updateManga(@Args('updateMangaInput') updateMangaInput: UpdateMangaInput) {
+  public async updateManga(
+    @Args('updateMangaInput') updateMangaInput: UpdateMangaInput,
+  ) {
     return this.mangaService.update(updateMangaInput.id, updateMangaInput);
   }
 
   @Mutation(() => Manga)
-  removeManga(@Args('id', { type: () => Int }) id: number) {
+  public async removeManga(
+    @Args('id', { type: () => ID }) id: Schema.Types.ObjectId,
+  ) {
     return this.mangaService.remove(id);
   }
 }
