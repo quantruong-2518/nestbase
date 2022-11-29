@@ -1,2 +1,2 @@
 export { AuthModule } from './auth/auth.module';
-export { MangaModule as test } from './manga/manga.module';
+export { MangaModule } from './manga/manga.module';
