@@ -2,11 +2,11 @@ import { UseGuards } from '@nestjs/common';
 import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema } from 'mongoose';
 
-import { PaginationArgType } from 'common/pagin/pagin.args';
 import { GqlAuthGuard } from 'modules/auth/guards';
 import { CreateMangaInput, UpdateMangaInput } from './dto';
 import { Manga } from './entities/manga.entity';
 import { MangaService } from './manga.service';
+import { PaginationArgType } from 'common/models';
 
 @Resolver(() => Manga)
 @UseGuards(GqlAuthGuard)
