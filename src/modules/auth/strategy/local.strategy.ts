@@ -28,7 +28,7 @@ export class LocalStrategy extends PassportStrategy(
    * - return value will be bound automatically to express/Request object
    * - if user is null, an exception will be thrown
    */
-  public async validate(username: string, password: string): Promise<any> {
+  public async validate(username: string, password: string) {
     const user = await this._authService.validateUser(username, password);
     if (!user) {
       throw new UnauthorizedException();

@@ -6,11 +6,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy, JwtStrategy, RefreshTokenStrategy } from './strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppConfigType } from '../../configurations/envs/env.type';
+import { UserModule } from 'modules/user/user.module';
 
 @Module({
   imports: [
     PassportModule,
     ConfigModule,
+    UserModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (config: ConfigService<AppConfigType>) => ({

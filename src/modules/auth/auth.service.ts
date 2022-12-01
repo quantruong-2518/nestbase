@@ -1,8 +1,9 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { omit } from 'common/utils';
+import { omit, pick } from 'common/utils';
 import { AppConfigType } from 'configurations/envs/env.type';
+import { UserService } from 'modules/user/user.service';
 import { JwtPayload } from './types/jwt-payload.type';
 
 @Injectable()
@@ -10,11 +11,12 @@ export class AuthService {
   constructor(
     private readonly _jwtService: JwtService,
     private readonly _configService: ConfigService<AppConfigType>,
+    private readonly _userService: UserService,
   ) {}
 
-  public async validateUser(username: string, password: string): Promise<any> {
-    const user = { id: 1, username, password };
-    if (user && user.password === password) {
+  public async validateUser(username: string, password: string) {
+    const user = await this._userService.findOne({ username, password });
+    if (user) {
       const result = omit(user, ['password']);
       return result;
     }
@@ -22,19 +24,13 @@ export class AuthService {
   }
 
   public async getTokens(userId: string): Promise<JwtPayload> {
-    //TODO: get user from userService, use utilityService.pick to pick field for payload
-    const user = { username: 'abc' };
+    const user = await this._userService.findOneById(userId);
+    const signUser = pick(user, ['username', 'roles']);
 
     const [accessToken, refreshToken] = await Promise.all([
-      this._jwtService.signAsync({
-        sub: userId,
-        ...user,
-      }),
+      this._jwtService.signAsync({ sub: userId, ...signUser }),
       this._jwtService.signAsync(
-        {
-          sub: userId,
-          ...user,
-        },
+        { sub: userId, ...signUser },
         {
           secret: this._configService.get('JWT_REFRESH_SECRET'),
           expiresIn: this._configService.get('JWT_REFRESH_EXP'),
