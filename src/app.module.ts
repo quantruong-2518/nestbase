@@ -1,16 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 import { MongooseConfig, GraphQLConfig, AppConfig } from './configurations';
-import { MangaModule, AuthModule } from './modules';
+import { MangaModule, AuthModule, UserModule } from './modules';
 
 const CONFIGURATIONS = [AppConfig, MongooseConfig, GraphQLConfig];
-const MODULES = [MangaModule, AuthModule];
+const MODULES = [MangaModule, AuthModule, UserModule];
 
 @Module({
   imports: [...MODULES, ...CONFIGURATIONS],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

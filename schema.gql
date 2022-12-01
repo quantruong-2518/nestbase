@@ -4,6 +4,17 @@
 
 directive @upper on FIELD_DEFINITION
 
+"""User model"""
+type UserEntity {
+  id: ID!
+  username: String!
+  email: String!
+  first_name: String!
+  last_name: String!
+  avatar: String!
+  roles: [String!]!
+}
+
 """Manga model"""
 type Manga {
   id: ID!
@@ -33,12 +44,16 @@ type Manga {
 type Query {
   mangas(page: Float = 0, offset: Float = 5): [Manga!]!
   manga(id: Int!): Manga!
+  users(page: Float = 0, offset: Float = 5): [UserEntity!]!
+  user(id: String!): UserEntity!
 }
 
 type Mutation {
   createManga(createMangaInput: CreateMangaInput!): Manga!
   updateManga(updateMangaInput: UpdateMangaInput!): Manga!
   removeManga(id: ID!): Manga!
+  createUser(createUserInput: CreateUserInput!): UserEntity!
+  removeUser(id: String!): UserEntity!
 }
 
 """Manga model for creation"""
@@ -87,4 +102,8 @@ input UpdateMangaInput {
   """The reading type of the manga"""
   reading_type: String
   id: Int!
+}
+
+input CreateUserInput {
+  username: String!
 }

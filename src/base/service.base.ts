@@ -1,20 +1,25 @@
-import { Document, Model, Schema as MongooseSchema } from 'mongoose';
+import {
+  Document,
+  FilterQuery,
+  Model,
+  Schema as MongooseSchema,
+} from 'mongoose';
 
 import { getPaginationParameters } from 'common/helpers';
 import { PaginationArgType } from 'common/models';
 
 export class BaseService<T, TDocument = T & Document> {
-  constructor(private baseModel: Model<TDocument>) {}
+  constructor(protected model: Model<TDocument>) {}
 
   public create<K>(createModelInput: K) {
-    const newModel = new this.baseModel(createModelInput);
+    const newModel = new this.model(createModelInput);
     return newModel.save();
   }
 
   public findAll(paginOptions: PaginationArgType) {
     const { page, offset } = getPaginationParameters(paginOptions);
 
-    return this.baseModel
+    return this.model
       .find()
       .skip(page * offset)
       .limit(offset)
@@ -22,18 +27,22 @@ export class BaseService<T, TDocument = T & Document> {
       .exec();
   }
 
-  public findOne(id: MongooseSchema.Types.ObjectId) {
-    return this.baseModel.findById(id).lean().exec();
+  public findOne(filterOptions: FilterQuery<TDocument>) {
+    return this.model.findOne(filterOptions, { password: 0 }).lean().exec();
+  }
+
+  public findOneById(id: string) {
+    return this.model.findById(id).lean().exec();
   }
 
   public update<K>(id: number, updateModelInput: K) {
-    return this.baseModel
+    return this.model
       .findByIdAndUpdate(id, updateModelInput, { new: true })
       .lean()
       .exec();
   }
 
   public remove(id: MongooseSchema.Types.ObjectId) {
-    return this.baseModel.findOneAndRemove(id).exec();
+    return this.model.findOneAndRemove(id).exec();
   }
 }
