@@ -1,10 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import {
-  WEEKLY_RELEASE_DAY,
-  MANGA_STATUS,
-  READING_TYPE,
-} from '../enums/manga.enum';
+import { WEEKLY_RELEASE_DAY, MANGA_STATUS, READING_TYPE } from './manga.enum';
 
 import { IManga } from './manga.model';
 
@@ -12,7 +8,7 @@ import { IManga } from './manga.model';
 export class Manga implements IManga {
   public _id: MongooseSchema.Types.ObjectId;
 
-  @Prop()
+  @Prop({ unique: true })
   public name: string;
   @Prop()
   public description: string;

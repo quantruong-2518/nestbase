@@ -24,10 +24,10 @@ type Manga {
   thumbnail: String!
 
   """The status of the manga"""
-  status: Int!
+  status: String!
 
   """The status of the manga"""
-  reading_type: Int!
+  reading_type: String!
 }
 
 type Query {
@@ -59,10 +59,10 @@ input CreateMangaInput {
   thumbnail: String!
 
   """The status of the manga"""
-  status: Int!
+  status: String!
 
-  """The status of the manga"""
-  reading_type: Int!
+  """The reading type of the manga"""
+  reading_type: String!
 }
 
 input UpdateMangaInput {
@@ -82,9 +82,9 @@ input UpdateMangaInput {
   thumbnail: String
 
   """The status of the manga"""
-  status: Int
+  status: String
 
-  """The status of the manga"""
-  reading_type: Int
+  """The reading type of the manga"""
+  reading_type: String
   id: Int!
 }

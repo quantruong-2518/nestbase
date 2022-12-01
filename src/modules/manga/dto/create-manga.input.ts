@@ -1,10 +1,10 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsOptional, MaxLength } from 'class-validator';
 import {
-  WEEKLY_RELEASE_DAY,
   MANGA_STATUS,
   READING_TYPE,
-} from '../enums/manga.enum';
+  WEEKLY_RELEASE_DAY,
+} from '../models/manga.enum';
 
 import { IManga } from '../models/manga.model';
 
@@ -36,9 +36,9 @@ export class CreateMangaInput implements IManga {
   @Field(() => String, { description: 'The thumbnail of this manga' })
   public thumbnail: string;
 
-  @Field(() => Int, { description: 'The status of the manga' })
+  @Field(() => String, { description: 'The status of the manga' })
   public status: MANGA_STATUS;
 
-  @Field(() => Int, { description: 'The status of the manga' })
+  @Field(() => String, { description: 'The reading type of the manga' })
   public reading_type: READING_TYPE;
 }

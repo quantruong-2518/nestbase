@@ -5,12 +5,12 @@ export enum WEEKLY_RELEASE_DAY {
 }
 
 export enum MANGA_STATUS {
-  IN_PROGRESS = 0,
-  DONE = 1,
-  PENDING = 2,
+  IN_PROGRESS = 'in-progress',
+  DONE = 'done',
+  PENDING = 'pending',
 }
 
 export enum READING_TYPE {
-  COMIC = 0,
-  STORY = 1,
+  COMIC = 'comic',
+  STORY = 'story',
 }
