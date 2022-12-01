@@ -1,5 +1,3 @@
-// person.model.ts
-
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import {
@@ -10,7 +8,7 @@ import {
 
 import { IManga } from './manga.model';
 
-@Schema()
+@Schema({ timestamps: true })
 export class Manga implements IManga {
   public _id: MongooseSchema.Types.ObjectId;
 

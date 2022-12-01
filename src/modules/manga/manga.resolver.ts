@@ -1,12 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int, ID } from '@nestjs/graphql';
-
-import { MangaService } from './manga.service';
-import { Manga } from './entities/manga.entity';
-import { CreateMangaInput } from './dto/create-manga.input';
-import { UpdateMangaInput } from './dto/update-manga.input';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'modules/auth/guards';
+import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema } from 'mongoose';
+
+import { GqlAuthGuard } from 'modules/auth/guards';
+import { CreateMangaInput, UpdateMangaInput } from './dto';
+import { Manga } from './entities/manga.entity';
+import { MangaService } from './manga.service';
+import { PaginationArgType } from 'common/models';
 
 @Resolver(() => Manga)
 @UseGuards(GqlAuthGuard)
@@ -21,8 +21,8 @@ export class MangaResolver {
   }
 
   @Query(() => [Manga], { name: 'mangas' })
-  public async findAll() {
-    return this.mangaService.findAll();
+  public async findAll(@Args() filterOptions: PaginationArgType) {
+    return this.mangaService.findAll(filterOptions);
   }
 
   @Query(() => Manga, { name: 'manga' })

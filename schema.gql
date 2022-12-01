@@ -42,7 +42,7 @@ type Manga {
 }
 
 type Query {
-  mangas: [Manga!]!
+  mangas(page: Float = 0, offset: Float = 5): [Manga!]!
   manga(id: Int!): Manga!
   users(page: Float = 0, offset: Float = 5): [UserEntity!]!
   user(id: String!): UserEntity!

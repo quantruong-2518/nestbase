@@ -1,6 +1,5 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { IsOptional, MaxLength } from 'class-validator';
-import { BaseEntity } from 'src/base/entities.base';
 
 import {
   MANGA_STATUS,

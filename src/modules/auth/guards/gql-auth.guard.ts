@@ -7,7 +7,7 @@ import { STRATEGY_TYPE } from '../strategy';
 
 @Injectable()
 export class GqlAuthGuard extends AuthGuard(STRATEGY_TYPE.JWT) {
-  canActivate(
+  public canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const ctx = GqlExecutionContext.create(context);
