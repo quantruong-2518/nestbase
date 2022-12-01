@@ -1,8 +1,4 @@
-import {
-  WEEKLY_RELEASE_DAY,
-  MANGA_STATUS,
-  READING_TYPE,
-} from '../enums/manga.enum';
+import { WEEKLY_RELEASE_DAY, MANGA_STATUS, READING_TYPE } from './manga.enum';
 
 export interface IManga {
   name: string;

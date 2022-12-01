@@ -5,12 +5,12 @@ import {
   MANGA_STATUS,
   READING_TYPE,
   WEEKLY_RELEASE_DAY,
-} from '../enums/manga.enum';
+} from '../models/manga.enum';
 
 import { IManga } from '../models/manga.model';
 
 @ObjectType({ description: 'Manga model' })
-export class Manga implements IManga {
+export class MangaEntity implements IManga {
   @Field(() => ID)
   public id: string;
 
@@ -40,9 +40,9 @@ export class Manga implements IManga {
   @Field(() => String, { description: 'The thumbnail of this manga' })
   public thumbnail: string;
 
-  @Field(() => Int, { description: 'The status of the manga' })
+  @Field(() => String, { description: 'The status of the manga' })
   public status: MANGA_STATUS;
 
-  @Field(() => Int, { description: 'The status of the manga' })
+  @Field(() => String, { description: 'The status of the manga' })
   public reading_type: READING_TYPE;
 }
