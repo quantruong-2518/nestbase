@@ -18,6 +18,9 @@ export function omit<T extends object, K extends keyof T>(
 }
 
 export function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {
+  if (!obj) {
+    return null;
+  }
   return keys.reduce((prev, cur) => {
     prev[cur] = obj[cur];
     return prev;
