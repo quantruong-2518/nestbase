@@ -5,6 +5,7 @@ import { omit, pick } from 'common/utils';
 import { AppConfigType } from 'configurations/envs/env.type';
 import { UserService } from 'modules/user/user.service';
 import { JwtPayload } from './types/jwt-payload.type';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -15,8 +16,10 @@ export class AuthService {
   ) {}
 
   public async validateUser(username: string, password: string) {
-    const user = await this._userService.findOne({ username, password });
-    if (user) {
+    const user = await this._userService.findOne({ username });
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
       const result = omit(user, ['password']);
       return result;
     }

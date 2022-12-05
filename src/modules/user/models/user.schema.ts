@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { SALT_WORK_FACTOR } from 'common/constants';
 import { omit } from 'common/utils';
 import { Role } from 'modules/auth/enum/role.enum';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { IUser } from './user.model';
-import bcrypt from 'bcrypt';
-import { SALT_WORK_FACTOR } from 'common/constants';
+import * as bcrypt from 'bcrypt';
 
 @Schema({ timestamps: true })
 export class User implements IUser {
@@ -24,18 +24,19 @@ export class User implements IUser {
   public avatar: string;
   @Prop({ type: Array, default: [Role.USER] })
   public roles: Role[];
+  public comparePasswords: (password: string) => boolean | Promise<boolean>;
 }
 
 export type UserDocument = User & Document;
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
 UserSchema.set('toJSON', {
   transform: function (doc, ret: IUser) {
     const retJson = omit(ret, ['password']);
     return retJson;
   },
 });
+
 UserSchema.pre('save', function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this;
@@ -43,23 +44,19 @@ UserSchema.pre('save', function (next) {
   // only hash the password if it has been modified (or is new)
   if (!user.isModified('password')) return next();
 
-  // generate a salt
   bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
-    if (err) return next(err);
+    if (err) {
+      return next(err);
+    }
 
     // hash the password using our new salt
     bcrypt.hash(user.password, salt, function (err, hash) {
-      if (err) return next(err);
-      // override the cleartext password with the hashed one
+      if (err) {
+        return next(err);
+      }
+
       user.password = hash;
       next();
     });
   });
 });
-
-UserSchema.methods.comparePassword = function (candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-    if (err) return cb(err);
-    cb(null, isMatch);
-  });
-};

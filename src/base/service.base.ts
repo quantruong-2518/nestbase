@@ -28,7 +28,7 @@ export class BaseService<T, TDocument = T & Document> {
   }
 
   public findOne(filterOptions: FilterQuery<TDocument>) {
-    return this.model.findOne(filterOptions, { password: 0 }).lean().exec();
+    return this.model.findOne(filterOptions);
   }
 
   public findOneById(id: string) {
